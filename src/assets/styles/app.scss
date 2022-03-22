@@ -1,0 +1,20 @@
+@import "utilities/colors";
+@import "utilities/variables";
+@import "utilities/function";
+
+
+body {
+    // min-height: 200vh;
+    background: linear-gradient(180deg, #693FBD 4.21%, #B866D3 45.9%, #693FBD 93.06%);
+    // overflow: overlay
+}
+::-webkit-scrollbar {
+    width: 0px;
+}
+// html {
+//   user-select: none
+// }
+
+
+@import "../../../node_modules/bootstrap/scss/bootstrap.scss";
+@import "../../../node_modules/bootstrap-vue/src/index.scss";

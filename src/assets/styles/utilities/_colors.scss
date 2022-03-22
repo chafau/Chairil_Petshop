@@ -1,0 +1,44 @@
+$white: #ffffff !default;
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #e5e5e5 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-600: #868e96 !default;
+$gray-700: #495057 !default;
+$gray-800: #343a40 !default;
+$gray-900: #212529 !default;
+
+// Bootstrap Base colors definitions
+
+$red :#e74c3c!default;
+$black: #313131 !default;
+$darky: #444444 !default;
+$gray-1: #F6F6F6 !default;
+$gray-2:#E8E8E8 !default;
+$gray-3: #C0C0C0 !default;
+$second-text: #5C5C5C !default;
+$light-grey: #F2F2F2 !default;
+
+$indigo: #7d3d60 !default;
+$green-tea: #D3E689 !default;
+$matcha: #88984A !default;
+$moccassin: #FFEDAD !default;
+
+$primary: #693FBD !default;
+$secondary: #B866D3 !default;
+
+$purple: #7D3D60 !default;
+$yellow: #F4DD8F !default;
+$dark: #313131 !default;
+$gray: #C0C0C0 !default;
+
+$blue: #6469D1 !default;
+$cyan: #5EDEF7 !default;
+$pink: #FF8DBE !default;
+$light-purple: #CE8AFB !default;
+
+$theme-colors: (
+  "accent": $primary,
+  "secondary": $secondary
+);
