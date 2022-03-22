@@ -30,6 +30,15 @@
         >
           About
         </v-tab>
+        <v-tab
+          to="/admin"
+          :ripple="false"
+          class="white--text"
+          min-width="96"
+          text
+        >
+          Admin
+        </v-tab>
       </v-tabs>
     </div>
 
@@ -69,14 +78,21 @@ export default {
   // position: sticky;
 
   .v-tabs-slider {
-    max-width: 24px;
+    max-width: 2.5px;
+    bottom: 50px !important;
     margin: 0 auto;
     background: $white;
+    border-radius: 30px;
+
+    &-wrapper {
+      bottom: 0.5rem;
+    }
   }
 
   .v-tab {
     text-decoration: none;
     text-transform: none;
+    font-family: $primary-font;
     &::before {
       display: none;
     }

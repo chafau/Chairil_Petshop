@@ -7,25 +7,24 @@
       'light-purple': colors === 'light-purple',
     }"
   >
-    <b-row>
-      <b-col cols="3">
-        <img
-          :src="image"
-          class="categories-icon"
-          alt
-        />
-      </b-col>
-      <b-col class="d-flex flex-column">
-        <div class="title text-left mb-2">{{ title }}</div>
+    <v-row>
+      <v-col cols="3" class="p-0 my-auto text-center">
+        <i
+          class="icon justify-content-center align-items-center"
+          :class="image"
+        ></i>
+      </v-col>
+      <v-col class="d-flex flex-column">
+        <div class="title text-left mb-2">{{ title.toUpperCase() }}</div>
         <div class="desc text-left">{{ description }}</div>
-      </b-col>
-    </b-row>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
 <script>
 export default {
-  name: "ConsultationList",
+  name: "DescriptionCard",
 
   props: {
     image: String,
@@ -47,7 +46,8 @@ export default {
     height: 100%;
   }
 
-  img {
+  .icon {
+    color: $white;
     @include tablet {
       width: 200%;
     }

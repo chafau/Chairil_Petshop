@@ -11,8 +11,8 @@ require('firebase/firestore')
 
 // import 'bootstrap/dist/css/bootstrap.css'
 // import 'bootstrap-vue/dist/bootstrap-vue.css'
-// import '@fortawesome/fontawesome-free/css/all.css'
-// import '@fortawesome/fontawesome-free/js/all.js'
+import '@fortawesome/fontawesome-free/css/all.css'
+import '@fortawesome/fontawesome-free/js/all.js'
 
 Vue.use(VueFirestore, {
   key: 'id',         // the name of the property. Default is '.key'.
@@ -27,7 +27,7 @@ Vue.use(VueImg);
 window.$ = window.jQuery = jQuery;
 
 import 'popper.js';
-import 'bootstrap';
+// import 'bootstrap';
 
 
 import Swal from 'sweetalert2';

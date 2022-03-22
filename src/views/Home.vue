@@ -1,27 +1,24 @@
 <template>
   <div id="home">
     <div class="m-jumbotron d-flex min-vh-100">
-      <v-row class="m-0" align="center" justify="center"
-        >>
-        <v-col>
+      <v-row class="m-0" align="center" justify="center">
+        <v-col cols="7">
           <v-img
             class="main mx-auto"
             :src="require('../assets/images/home_jumbo.png')"
-            max-width="100"
+            max-width="700"
           ></v-img>
         </v-col>
         <v-col
-          sm="12"
-          md="6"
+          cols="5"
           class="justify-content-center align-items-center text-left px-9"
         >
-          <h1 class="jumbo-title text-left text-dark font-weight-bold mb-3 pr-9">
-            Pesan Makanan Dari Rumah Secara Cepat
-          </h1>
-          <div class="text-center">
-            <p class="subtitle text-dark text-left pr-9">
-              “Kami Mempunyau 10.000+ Review dan customer kami mempercayai
-              makanan makanan kami dan jasa pengiriman kami”
+          <div>
+            <h1 class="jumbo-title text-left text-white font-weight-bold">
+              Petshop Terbaik Untuk Hewan Kesayangan
+            </h1>
+            <p class="subtitle text-white text-left w-75 m-0">
+              Kami telah dipercaya oleh ribuan pelanggan dari seluruh Indonesia
             </p>
           </div>
         </v-col>
@@ -34,10 +31,29 @@
           class="mt-4"
           sm="12"
           md="4"
-          v-for="item in CategoriesCard"
+          v-for="item in DescriptionCard"
           :key="item.id"
         >
-          <ConsultationList
+          <DescriptionCard
+            :title="item.title"
+            :description="item.description"
+            :colors="item.color"
+            :image="item.image"
+          />
+        </v-col>
+      </v-row>
+    </v-container>
+
+    <v-container class="">
+      <v-row>
+        <v-col
+          class="mt-4"
+          sm="12"
+          md="4"
+          v-for="item in DescriptionCard"
+          :key="item.id"
+        >
+          <DescriptionCard
             :title="item.title"
             :description="item.description"
             :colors="item.color"
@@ -54,26 +70,27 @@ export default {
   name: "Home",
   data() {
     return {
-      CategoriesCard: [
+      DescriptionCard: [
         {
           id: 1,
-          title: "BERKUALITAS",
+          title: "berkualitas",
           description:
-            "Terbesar, Terlengkap, dan Terpercaya dari sabang sampai merauke",
-          image: require("@/assets/images/categories/categories_love.svg"),
+            "Kami menjual berbagai makanan dan juga berbagai snack yang pastinya dengan rasa terbaik",
+          image: "fa-solid fa-shield fa-3x",
         },
         {
           id: 2,
-          title: "woy",
-          description: "Belanja Online Tanpa Ribet",
-          image: require("@/assets/images/categories/categories_luck.svg"),
+          title: "nyaman",
+          description:
+            "Kami menjual berbagai makanan dan juga berbagai snack yang pastinya dengan rasa terbaik",
+          image: "fas fa-thumbs-up fa-3x",
         },
         {
           id: 3,
-          title: "woy",
+          title: "murah",
           description:
-            "Terjamin murah dan juga barang barang yang disediakan jelas dengan kualitas terbaik",
-          image: require("@/assets/images/categories/categories_work.svg"),
+            "Kami menjual berbagai makanan dan juga berbagai snack yang pastinya dengan rasa terbaik",
+          image: "fas fa-dollar-sign fa-3x",
         },
       ],
     };
@@ -83,9 +100,17 @@ export default {
 
 <style lang="scss">
 #home {
-}
-.cek {
-  /* padding:0 px; */
-  font-family: $primary-font;
+  max-height: 100vh 1;
+
+  .jumbo-title {
+    font-family: $primary-font;
+    font-size: 50px; //perlu diganti dan max-width gambar
+    line-height: 60px !important;
+  }
+
+  .subtitle {
+    font-family: $primary-font;
+    font-size: 18px;
+  }
 }
 </style>
