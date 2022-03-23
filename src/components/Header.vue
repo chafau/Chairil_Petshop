@@ -75,7 +75,7 @@ export default {
 
 <style lang="scss">
 #home-app-bar {
-  // position: sticky;
+  position: sticky;
 
   .v-tabs-slider {
     max-width: 2.5px;

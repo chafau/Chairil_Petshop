@@ -19,6 +19,8 @@
         <div class="desc text-left">{{ description }}</div>
       </v-col>
     </v-row>
+
+    
   </div>
 </template>
 
