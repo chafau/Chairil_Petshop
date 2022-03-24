@@ -44,41 +44,15 @@
       </v-row>
     </v-container>
 
-    <v-container class="">
-      <v-row>
-        <v-col
-          class="mt-4"
-          sm="12"
-          md="4"
-          v-for="item in DescriptionCard"
-          :key="item.id"
-        >
-        </v-col>
-      </v-row>
-    </v-container>
-
     <v-container>
       <!--  -->
       <v-col sm="12" md="6" class="m-auto align-items-center text-center">
         <v-col class="align-items-center text-center white--text">
-          <h2 class="text-center mt-5">How PETshop Works</h2>
+          <h2 class="text-center mt-10">How PETshop Works</h2>
           <p class="my-4">
-            PETshop menawarkan jasa trainer latihan dengan kualitas terjamin dan
-            harga yang terjangkau
+            Di Pusat Kebutuhan Hewan Peliharaan Terbesar, Terlengkap, dan
+            Terpercaya No.1 di Indonesia
           </p>
-
-          <div class="d-flex mb-5">
-            <!-- <router-link to="/" class="d-block w-50">
-              <DefaultButton title="Masuk Sekarang" variant="default" />
-            </router-link>
-
-            <router-link to="/" class="d-block w-50 ml-2">
-              <DefaultButton
-                title="Masuk Sekarang"
-                variant="default-bordered"
-              />
-            </router-link> -->
-          </div>
         </v-col>
       </v-col>
       <!--  -->
@@ -151,14 +125,59 @@
         <!-- batas v-col ketiga -->
       </v-row>
     </v-container>
+
+    <v-container>
+      <v-divider class="test mx-auto my-15" inset></v-divider>
+    </v-container>
+
+    <v-container>
+      <div>
+        <v-carousel show-arrows-on-hover cycle>
+          <v-carousel-item
+            v-for="item in products"
+            :key="item.id"
+            :src="item.imageURL.join('')"
+          ></v-carousel-item>
+        </v-carousel>
+      </div>
+    </v-container>
+
+    <v-container>
+      <v-divider class="test mx-auto my-15" inset></v-divider>
+    </v-container>
   </div>
 </template>
 
 <script>
+import { fb, db } from "../firebase";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+import Swal from "sweetalert2";
+import $ from "jquery";
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: "top-end",
+  showConfirmButton: false,
+  timer: 3000,
+});
+
 export default {
   name: "Home",
   data() {
     return {
+      product: [
+        {
+          imageURL:
+            "https://firebasestorage.googleapis.com/v0/b/petshop-firebase.appspot.com/o/products%2F6b.png?alt=media&token=b25eac84-d7bc-4496-9b0e-1bb8a7994b52",
+        },
+      ],
+
+      products: [],
       DescriptionCard: [
         {
           id: 1,
@@ -184,12 +203,17 @@ export default {
       ],
     };
   },
+  firestore() {
+    return {
+      products: db.collection("products"),
+    };
+  },
 };
 </script>
 
 <style lang="scss">
 #home {
-  max-height: 100vh;
+  min-height: 100vh;
 
   .jumbo-title {
     font-family: $primary-font;
@@ -201,89 +225,99 @@ export default {
     font-family: $primary-font;
     font-size: 18px;
   }
-}
 
-.m-jumbotron {
-  position: relative;
-  min-height: 100vh !important;
+  .m-jumbotron {
+    min-height: 100vh !important;
 
-  @include tablet {
-    min-width: 100%;
-    height: 100%;
+    @include tablet {
+      min-width: 100%;
+      height: 100%;
+    }
+
+    @include small-mobile {
+      min-width: 100%;
+      height: 100% !important;
+    }
+
+    .btn-action {
+      width: 230px !important;
+    }
+
+    .btn-black {
+      margin-left: 130%;
+      width: 230px !important;
+    }
   }
 
-  @include small-mobile {
-    min-width: 100%;
-    height: 100% !important;
+  .box-num {
+    width: 50px;
+    height: 50px;
+    background: $black-transparent;
+    border-radius: 30%;
+
+    @include small-mobile {
+      margin: auto;
+    }
   }
 
-  .btn-action {
-    width: 230px !important;
+  .box-text {
+    font-family: $primary-font;
+    font-weight: $font-semibold;
+    color: $white;
   }
 
-  .btn-black {
-    margin-left: 130%;
-    width: 230px !important;
-  }
-}
-
-.box-num {
-  width: 50px;
-  height: 50px;
-  background: $black-transparent;
-  border-radius: 30%;
-
-  @include small-mobile {
-    margin: auto;
-  }
-}
-
-.box-text {
-  font-family: $primary-font;
-  font-weight: $font-semibold;
-  color: $white;
-}
-
-.detail-title {
-  font-family: $primary-font;
-  font-weight: $font-semibold;
-
-  @include small-mobile {
-    text-align: center !important;
-  }
-}
-
-.detail-img {
-  @include small-mobile {
-    display: none;
-  }
-}
-
-.detail-paragraph {
-  @include small-mobile {
-    text-align: center !important;
-  }
-}
-
-.card-box {
-  .detail-paragraph-right {
-    text-align: right !important;
+  .detail-title {
+    font-family: $primary-font;
+    font-weight: $font-semibold;
 
     @include small-mobile {
       text-align: center !important;
     }
   }
 
-  .detail-paragraph-left {
-    text-align: left !important;
+  .detail-img {
+    @include small-mobile {
+      display: none;
+    }
+  }
 
+  .detail-paragraph {
     @include small-mobile {
       text-align: center !important;
     }
   }
 
-  .desc-text {
-    line-height: 25px;
+  .card-box {
+    .detail-paragraph-right {
+      text-align: right !important;
+
+      @include small-mobile {
+        text-align: center !important;
+      }
+    }
+
+    .detail-paragraph-left {
+      text-align: left !important;
+
+      @include small-mobile {
+        text-align: center !important;
+      }
+    }
+
+    .desc-text {
+      line-height: 25px;
+    }
+  }
+
+  .test {
+    width: 510px;
+    border: 4px solid white;
+    background: $white;
+    border-radius: 30px;
+  }
+
+  .v-item-group {
+    border-radius: 30px;
   }
 }
 </style>

@@ -10,7 +10,7 @@
     elevate-on-scroll
     height="80"
   >
-    <div class="navbar-brand white--text hidden-sm-only mr-0 ml-5">PETshop</div>
+    <div class="navbar-brand white--text hidden-sm-only mr-0 ml-5">PETshops</div>
 
     <div class="mx-auto">
       <v-tabs
@@ -43,7 +43,7 @@
     </div>
 
     <div class="navbar-brand transparent--text hidden-sm-only mr-0 ml-5">
-      PETshop
+      PETshops
     </div>
 
     <v-app-bar-nav-icon class="hidden-md-and-up" @click="drawer = !drawer" />
@@ -92,7 +92,6 @@ export default {
   .v-tab {
     text-decoration: none;
     text-transform: none;
-    font-family: $primary-font;
     &::before {
       display: none;
     }
