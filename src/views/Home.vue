@@ -168,6 +168,7 @@ const Toast = Swal.mixin({
 
 export default {
   name: "Home",
+  components: {},
   data() {
     return {
       product: [
@@ -199,6 +200,18 @@ export default {
           description:
             "Kami menjual berbagai makanan dan juga berbagai snack yang pastinya dengan rasa terbaik",
           image: "fas fa-dollar-sign fa-3x",
+        },
+      ],
+      testimonials: [
+        {
+          index: 1,
+          reviewer_name: "woy",
+        },
+        {
+          index: 2,
+        },
+        {
+          index: 3,
         },
       ],
     };

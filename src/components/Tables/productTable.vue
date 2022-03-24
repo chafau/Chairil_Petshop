@@ -1,21 +1,67 @@
 <template>
-      <v-container>
-        <v-data-table
-          :headers="headers"
-          :items="products"
-          :items-per-page="5"
-          item-key="id"
-          class="elevation-1"
-          :footer-props="{
-            showFirstLastPage: true,
-          }"
-          ><template v-slot:item="{ item }">
-            <tr>
-              <td>{{ item.productName }}</td>
-              <td><img :src="item.imageURL" alt="" width="80px" /></td>
-            </tr> </template
-        ></v-data-table>
-      </v-container>
+  <v-container>
+    <v-data-table
+      :headers="headers"
+      :items="products"
+      :items-per-page="5"
+      item-key="id"
+      class="elevation-1"
+      :footer-props="{
+        showFirstLastPage: true,
+      }"
+    >
+      <template v-slot:top>
+        <v-toolbar flat>
+          <v-toolbar-title>Image Accordion</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-dialog v-model="dialog" max-width="500px">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
+                New Item
+              </v-btn>
+            </template>
+            <v-card>
+              <v-card-text>
+                <v-container>
+                  <v-row>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="product.productName"
+                        label="Nama Gambar"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-file-input
+                        counter
+                        show-size
+                        truncate-length="15"
+                        @change="uploadImage"
+                      ></v-file-input>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card-text>
+
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="close">
+                  Cancel
+                </v-btn>
+                <v-btn color="blue darken-1" text @click="addProduct()">
+                  Save
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-toolbar>
+      </template>
+      <template v-slot:item="{ item }">
+        <tr>
+          <td>{{ item.productName }}</td>
+          <td><img :src="item.imageURL" alt="" width="80px" /></td>
+        </tr> </template
+    ></v-data-table>
+  </v-container>
 </template>
 
 <script>
@@ -40,6 +86,32 @@ export default {
   name: "TableProduct",
   data() {
     return {
+      products: [],
+      product: {
+        productName: null,
+        description: null,
+        productPrice: null,
+        tags: [],
+        imageURL: [],
+      },
+      dialog: false,
+      dialogDelete: false,
+      desserts: [],
+      editedIndex: -1,
+      editedItem: {
+        name: "",
+        calories: 0,
+        fat: 0,
+        carbs: 0,
+        protein: 0,
+      },
+      defaultItem: {
+        name: "",
+        calories: 0,
+        fat: 0,
+        carbs: 0,
+        protein: 0,
+      },
       headers: [
         {
           text: "Gambar",
@@ -54,6 +126,102 @@ export default {
     return {
       products: db.collection("products"),
     };
+  },
+  computed: {
+    formTitle() {
+      return this.editedIndex === -1 ? "New Item" : "Edit Item";
+    },
+  },
+
+  watch: {
+    dialog(val) {
+      val || this.close();
+    },
+    dialogDelete(val) {
+      val || this.closeDelete();
+    },
+  },
+
+  created() {
+  },
+
+  methods: {
+    editItem(item) {
+      this.editedIndex = this.desserts.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
+    },
+
+    deleteItem(item) {
+      this.editedIndex = this.desserts.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialogDelete = true;
+    },
+
+    deleteItemConfirm() {
+      this.desserts.splice(this.editedIndex, 1);
+      this.closeDelete();
+    },
+
+    close() {
+      this.dialog = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+
+    closeDelete() {
+      this.dialogDelete = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+
+    save() {
+      if (this.editedIndex > -1) {
+        Object.assign(this.desserts[this.editedIndex], this.editedItem);
+      } else {
+        this.desserts.push(this.editedItem);
+      }
+      this.close();
+    },
+    addProduct() {
+      if (!this.product.productName || !this.product.imageURL.join("")) {
+        console.log("ini kosong");
+      } else {
+        this.$firestore.products.add(this.product);
+        Toast.fire({
+          type: "success",
+          title: "Product created successfully",
+        });
+        this.close();
+        console.log(this.product.imageURL);
+      }
+    },
+    uploadImage(files) {
+      if (files) {
+        const storage = getStorage();
+        const storageRef = ref(storage, "products/" + files.name);
+        const uploadTask = uploadBytesResumable(storageRef, files);
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {},
+          (error) => {},
+          () => {
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+              this.product.imageURL.push(downloadURL);
+
+              console.log("File available at", downloadURL);
+              // if (!downloadURL == 0) {
+              //   this.test();
+              // }
+            });
+          }
+        );
+      }
+    },
   },
 };
 </script>
