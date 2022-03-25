@@ -60,7 +60,7 @@
       <!-- V-ROW -->
       <v-row>
         <v-col cols="4" align-self="center">
-          <div class="card-box">
+          <div class="card-box white--text">
             <div class="box-num d-flex ml-auto">
               <p class="box-text d-block m-auto">1</p>
             </div>
@@ -73,7 +73,7 @@
 
           <div style="height: 120px"></div>
 
-          <div class="card-box">
+          <div class="card-box white--text">
             <div class="box-num d-flex ml-auto">
               <p class="box-text d-block m-auto">2</p>
             </div>
@@ -97,7 +97,7 @@
         <!-- batas v-col kedua -->
 
         <v-col cols="4" align-self="center">
-          <div class="card-box">
+          <div class="card-box white--text">
             <div class="box-num d-flex mr-auto">
               <p class="box-text d-block m-auto">2</p>
             </div>
@@ -110,7 +110,7 @@
 
           <div style="height: 120px"></div>
 
-          <div class="card-box">
+          <div class="card-box white--text">
             <div class="box-num d-flex mr-auto">
               <p class="box-text d-block m-auto">2</p>
             </div>
@@ -131,6 +131,7 @@
     </v-container>
 
     <v-container>
+      <h2 class="text-center white--text mb-8">Galeri</h2>
       <div>
         <v-carousel show-arrows-on-hover cycle>
           <v-carousel-item

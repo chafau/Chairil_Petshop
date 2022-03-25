@@ -20,7 +20,7 @@
                 New Item
               </v-btn>
             </template>
-            <v-card>
+            <v-card id="product">
               <v-card-text>
                 <v-container>
                   <v-row>
@@ -53,14 +53,35 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
+          <v-dialog v-model="dialogDelete" max-width="500px">
+            <v-card>
+              <v-card-title class="text-h5"
+                >Are you sure you want to delete this item?</v-card-title
+              >
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="closeDelete"
+                  >Cancel</v-btn
+                >
+                <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+                  >OK</v-btn
+                >
+                <v-spacer></v-spacer>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </v-toolbar>
       </template>
       <template v-slot:item="{ item }">
         <tr>
           <td>{{ item.productName }}</td>
           <td><img :src="item.imageURL" alt="" width="80px" /></td>
-        </tr> </template
-    ></v-data-table>
+          <td>
+            <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+          </td>
+        </tr>
+      </template></v-data-table
+    >
   </v-container>
 </template>
 
@@ -87,6 +108,7 @@ export default {
   data() {
     return {
       products: [],
+      modal: null,
       product: {
         productName: null,
         description: null,
@@ -114,11 +136,11 @@ export default {
       },
       headers: [
         {
-          text: "Gambar",
+          text: "Nama Gambar",
           align: "start",
         },
-        { text: "Category", value: "category" },
-        { text: "" },
+        { text: "Gambar" },
+        { text: "Action" },
       ],
     };
   },
@@ -142,8 +164,7 @@ export default {
     },
   },
 
-  created() {
-  },
+  created() {},
 
   methods: {
     editItem(item) {
@@ -152,10 +173,54 @@ export default {
       this.dialog = true;
     },
 
+    editProduct(item) {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.value) {
+          this.$firestore.products.doc(item.id).delete();
+
+          Toast.fire({
+            type: "success",
+            title: "Deleted  successfully",
+          });
+        }
+      });
+      console.log(item.id);
+    },
+
+    updateProduct() {
+      this.$firestore.products.doc(this.product.id).update(this.product);
+      Toast.fire({
+        type: "success",
+        title: "Updated  successfully",
+      });
+    },
+
     deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialogDelete = true;
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.value) {
+          this.$firestore.products.doc(item.id).delete();
+
+          Toast.fire({
+            type: "success",
+            title: "Deleted  successfully",
+          });
+        }
+      });
+      console.log(item.id);
     },
 
     deleteItemConfirm() {
