@@ -20,6 +20,7 @@ Vue.use(VueFirestore, {
 })
 Vue.use(VueFirestore)
 Vue.use(globalComponents)
+Vue.use(fb)
 // Vue.use(BootstrapVue)
 // Vue.use(IconsPlugin)
 Vue.use(VueImg);
@@ -51,7 +52,7 @@ Vue.config.productionTip = false;
 let app = '';
 
 fb.auth().onAuthStateChanged(function(user) {
-
+  // console.log("user", user);
   if(!app){
     new Vue({
       router,

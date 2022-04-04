@@ -3,44 +3,39 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 // import {fb} from '../firebase'
 
+import { fb } from "@/firebase"
+import "firebase/auth";
 
 Vue.use(VueRouter)
 
 const routes = [{
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    component: () => import('../views/About.vue')
-  },
-  {
-    path: '/admin',
-    name: 'admin',
-    component: () => import('../views/admin/Admin.vue')
-  },
-  {
-    path: '/products/id/:id',
-    name: 'detail',
-    // component: () => import('../views/ProductDetail.vue')
-  },
-  {
-    path: '/profiles',
-    name: 'profiles',
-    // component: () => import('../views/Profiles.vue')
-  },
-  {
-    path: '/tables',
-    name: 'tables',
-    // component: () => import('../views/Tables.vue')
-  },
-  {
-    path: '*',
-    name: '404',
-    // component: () => import('../views/404.vue')
+  path: '/',
+  name: 'Home',
+  component: Home
+},
+{
+  path: '/about',
+  name: 'About',
+  component: () => import('../views/About.vue')
+},
+{
+  path: '/admin',
+  name: 'Admin',
+  component: () => import('../views/admin/Admin.vue'),
+  meta: {
+    requiresAuth: true
   }
+},
+// {
+//   path: '/Login',
+//   name: 'Login',
+//   component: () => import('../views/admin/Login.vue')
+// },
+{
+  path: '*',
+  name: '404',
+  // component: () => import('../views/404.vue')
+}
 ]
 
 // router.beforeEach((to, from, next) => {
@@ -77,5 +72,17 @@ const router = new VueRouter({
     };
   }
 })
+
+// router.beforeEach((to, from, next) => {
+//   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+//   const isAuthenticated = fb.auth().currentUser;
+//   // console.log("isauthenticated", isAuthenticated);
+//   if (requiresAuth && !isAuthenticated) {
+//     next("/login");
+//   } else {
+//     next();
+//   }
+// });
+
 
 export default router

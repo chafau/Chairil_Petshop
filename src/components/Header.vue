@@ -10,7 +10,9 @@
     elevate-on-scroll
     height="80"
   >
-    <div class="navbar-brand white--text hidden-sm-only mr-0 ml-5">PETshops</div>
+    <div class="navbar-brand white--text hidden-sm-only mr-0 ml-5">
+      PETshops
+    </div>
 
     <div class="mx-auto">
       <v-tabs
@@ -30,8 +32,10 @@
         >
           About
         </v-tab>
+        <!-- gak wajib ada @click, dihapus pun gak pengaruh -->
+
         <v-tab
-          to="/admin"
+          @click="redirectAdmin"
           :ripple="false"
           class="white--text"
           min-width="96"
@@ -47,24 +51,126 @@
     </div>
 
     <v-app-bar-nav-icon class="hidden-md-and-up" @click="drawer = !drawer" />
+
+    <v-dialog v-model="dialog" max-width="600px" justify="center">
+      <v-card>
+        <v-card-title>
+          <span class="text-h5">Login</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-form @submit.prevent="pressed" id="check-login-form" ref="form">
+              <v-row class="">
+                <v-col cols="12" md="6">
+                  <v-text-field
+                    v-model="email"
+                    label="E-mail"
+                    required
+                  ></v-text-field>
+                </v-col>
+
+                <v-col cols="12" md="6">
+                  <v-text-field
+                    v-model="password"
+                    type="password"
+                    label="password"
+                    required
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-form>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="danger" text @click="resetForm">Reset</v-btn>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="dialog = false">
+            Close
+          </v-btn>
+          <v-btn
+            color="success"
+            type="submit"
+            text
+            @click="dialog = false"
+            form="check-login-form"
+          >
+            Submit
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-app-bar>
 </template>
 
 <script>
+import { fb } from "@/firebase";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+} from "firebase/auth";
+
 export default {
   name: "Header",
   data() {
     return {
       drawer: false,
       scrollPosition: null,
+      dialog: false,
+      LoggedIn: null,
+      valid: false,
+      password: "admin123",
+      email: "admin123@admin.com",
     };
   },
+  created() {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.LoggedIn = true;
+      } else {
+        this.LoggedIn = false;
+      }
+    });
+  },
   methods: {
+    resetForm() {
+      this.$refs.form.reset();
+    },
+    async pressed() {
+      const auth = getAuth();
+      signInWithEmailAndPassword(auth, this.email, this.password)
+        .then((data) => {
+          this.$router.replace(
+            `${"/admin"}?success=${fb.auth().currentUser.uid}`
+          );
+          // console.log(data);
+        })
+        .catch((err) => {});
+    },
+    async signOut() {
+      const auth = getAuth();
+      signOut(auth)
+        .then(() => {
+          // Sign-out successful.
+          this.$router.push({ path: "/login" });
+        })
+        .catch((error) => {
+          // An error happened.
+        });
+    },
+    redirectAdmin() {
+      if (fb.auth().currentUser) {
+        this.$router.replace(`${"/admin"}?edit=${fb.auth().currentUser.uid}`);
+      } else if (!fb.auth().currentUser) {
+        // this.$router.push({ path: "/login" });
+        this.dialog = true;
+      }
+    },
     updateScroll() {
       this.scrollPosition = window.scrollY;
-    },
-    test() {
-      console.log(this.drawer);
     },
   },
   mounted() {

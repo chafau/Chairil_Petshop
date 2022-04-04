@@ -17,6 +17,7 @@ export default {
   data() {
     return {
       setHide: true,
+      dialog: false,
     };
   },
   methods: {

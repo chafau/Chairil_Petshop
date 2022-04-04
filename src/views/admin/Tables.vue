@@ -196,7 +196,7 @@
 
 <script>
 import { VueEditor } from "vue2-editor";
-import { fb, db } from "../firebase";
+import { fb, db } from "@/firebase";
 import {
   getStorage,
   ref,

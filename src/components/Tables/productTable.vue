@@ -1,8 +1,8 @@
 <template>
-  <v-container>
+  <div>
     <v-data-table
       :headers="headers"
-      :items="products"
+      :items="images"
       :items-per-page="5"
       item-key="id"
       class="elevation-1"
@@ -12,29 +12,40 @@
     >
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title>Image Accordion</v-toolbar-title>
+          <v-toolbar-title>Image Carousel</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="500px">
             <template v-slot:activator="{ on, attrs }">
-              <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
+              <v-btn
+                color="primary"
+                dark
+                class="mb-2"
+                v-bind="attrs"
+                v-on="on"
+                @click="resetData()"
+              >
                 New Item
               </v-btn>
             </template>
-            <v-card id="product">
+            <v-card id="">
               <v-card-text>
                 <v-container>
                   <v-row>
-                    <v-col cols="12" sm="6" md="4">
+                    <v-col cols="12" sm="6" md="6">
                       <v-text-field
-                        v-model="product.productName"
+                        v-model="imageData.imageName"
                         label="Nama Gambar"
                       ></v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="6" md="4">
+                    <v-col cols="12" sm="6" md="6">
                       <v-file-input
                         counter
                         show-size
-                        truncate-length="15"
+                        truncate-length="30"
+                        accept="image/png, image/jpeg, image/bmp"
+                        placeholder="Pick an avatar"
+                        prepend-icon="mdi-camera"
+                        v-model="filesimg"
                         @change="uploadImage"
                       ></v-file-input>
                     </v-col>
@@ -47,8 +58,14 @@
                 <v-btn color="blue darken-1" text @click="close">
                   Cancel
                 </v-btn>
-                <v-btn color="blue darken-1" text @click="addProduct()">
-                  Save
+                <v-btn
+                  color="success"
+                  text
+                  :loading="isLoading"
+                  :disabled="isDisabled"
+                  @click="addImage()"
+                >
+                  Add
                 </v-btn>
               </v-card-actions>
             </v-card>
@@ -74,7 +91,7 @@
       </template>
       <template v-slot:item="{ item }">
         <tr>
-          <td>{{ item.productName }}</td>
+          <td>{{ item.imageName }}</td>
           <td><img :src="item.imageURL" alt="" width="80px" /></td>
           <td>
             <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
@@ -82,7 +99,7 @@
         </tr>
       </template></v-data-table
     >
-  </v-container>
+  </div>
 </template>
 
 <script>
@@ -100,40 +117,29 @@ const Toast = Swal.mixin({
   toast: true,
   position: "top-end",
   showConfirmButton: false,
-  timer: 3000,
+  iconColor: "white",
+  customClass: {
+    popup: "colored-toast",
+  },
+  timer: 3500,
+  timerProgressBar: true,
 });
 
 export default {
   name: "TableProduct",
   data() {
     return {
-      products: [],
+      isDisabled: true,
+      isLoading: false,
+      filesimg: [],
+      images: [],
       modal: null,
-      product: {
-        productName: null,
-        description: null,
-        productPrice: null,
-        tags: [],
+      imageData: {
+        imageName: null,
         imageURL: [],
       },
       dialog: false,
       dialogDelete: false,
-      desserts: [],
-      editedIndex: -1,
-      editedItem: {
-        name: "",
-        calories: 0,
-        fat: 0,
-        carbs: 0,
-        protein: 0,
-      },
-      defaultItem: {
-        name: "",
-        calories: 0,
-        fat: 0,
-        carbs: 0,
-        protein: 0,
-      },
       headers: [
         {
           text: "Nama Gambar",
@@ -146,14 +152,10 @@ export default {
   },
   firestore() {
     return {
-      products: db.collection("products"),
+      images: db.collection("images"),
     };
   },
-  computed: {
-    formTitle() {
-      return this.editedIndex === -1 ? "New Item" : "Edit Item";
-    },
-  },
+  computed: {},
 
   watch: {
     dialog(val) {
@@ -167,41 +169,6 @@ export default {
   created() {},
 
   methods: {
-    editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialog = true;
-    },
-
-    editProduct(item) {
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
-      }).then((result) => {
-        if (result.value) {
-          this.$firestore.products.doc(item.id).delete();
-
-          Toast.fire({
-            type: "success",
-            title: "Deleted  successfully",
-          });
-        }
-      });
-      console.log(item.id);
-    },
-
-    updateProduct() {
-      this.$firestore.products.doc(this.product.id).update(this.product);
-      Toast.fire({
-        type: "success",
-        title: "Updated  successfully",
-      });
-    },
-
     deleteItem(item) {
       Swal.fire({
         title: "Are you sure?",
@@ -212,15 +179,16 @@ export default {
         confirmButtonText: "Yes, delete it!",
       }).then((result) => {
         if (result.value) {
-          this.$firestore.products.doc(item.id).delete();
+          this.$firestore.images.doc(item.id).delete();
 
           Toast.fire({
-            type: "success",
+            type: "error",
+            icon: "error",
             title: "Deleted  successfully",
           });
         }
       });
-      console.log(item.id);
+      // console.log(item.id);
     },
 
     deleteItemConfirm() {
@@ -244,41 +212,50 @@ export default {
       });
     },
 
-    save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
-      } else {
-        this.desserts.push(this.editedItem);
-      }
-      this.close();
+    resetData() {
+      this.imageData = {
+        imageName: null,
+        imageURL: [],
+      };
+      this.filesimg = null;
     },
-    addProduct() {
-      if (!this.product.productName || !this.product.imageURL.join("")) {
-        console.log("ini kosong");
+
+    addImage() {
+      if (!this.imageData.imageName || !this.imageData.imageURL.join("")) {
+        // console.log("ini kosong");
       } else {
-        this.$firestore.products.add(this.product);
+        this.$firestore.images.add(this.imageData);
         Toast.fire({
           type: "success",
+          icon: "success",
           title: "Product created successfully",
         });
         this.close();
-        console.log(this.product.imageURL);
+        console.log(this.imageData.imageURL);
       }
     },
-    uploadImage(files) {
-      if (files) {
+    cek() {
+      if (this.filesimg.length == 0) {
+        console.log(this.filesimg);
+      }
+    },
+    uploadImage() {
+      this.isLoading = true;
+      if (this.filesimg) {
         const storage = getStorage();
-        const storageRef = ref(storage, "products/" + files.name);
-        const uploadTask = uploadBytesResumable(storageRef, files);
+        const storageRef = ref(storage, "images/" + this.filesimg.name);
+        const uploadTask = uploadBytesResumable(storageRef, this.filesimg);
         uploadTask.on(
           "state_changed",
           (snapshot) => {},
           (error) => {},
           () => {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-              this.product.imageURL.push(downloadURL);
+              this.imageData.imageURL.push(downloadURL);
 
               console.log("File available at", downloadURL);
+              this.isDisabled = false;
+              this.isLoading = false;
               // if (!downloadURL == 0) {
               //   this.test();
               // }
@@ -287,6 +264,55 @@ export default {
         );
       }
     },
+
+    // uploadImage(files) {       //withfiles atau tanpa v-model di v-input
+    //   if (files) {
+    //     const storage = getStorage();
+    //     const storageRef = ref(storage, "images/" + files.name);
+    //     const uploadTask = uploadBytesResumable(storageRef, files);
+    //     uploadTask.on(
+    //       "state_changed",
+    //       (snapshot) => {},
+    //       (error) => {},
+    //       () => {
+    //         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+    //           this.imageData.imageURL.push(downloadURL);
+
+    //           console.log("File available at", downloadURL);
+    //           // if (!downloadURL == 0) {
+    //           //   this.test();
+    //           // }
+    //         });
+    //       }
+    //     );
+    //   }
+    // },
   },
 };
 </script>
+
+<style lang="scss">
+.colored-toast.swal2-icon-success {
+  background-color: #a5dc86 !important;
+
+  .swal2-title {
+    color: rgb(255, 255, 255);
+  }
+}
+
+.colored-toast.swal2-icon-error {
+  background-color: #f27474 !important;
+
+   .swal2-title {
+     color: white;
+   }
+}
+
+.colored-toast .swal2-close {
+  color: white;
+}
+
+.colored-toast .swal2-html-container {
+  color: white;
+}
+</style>

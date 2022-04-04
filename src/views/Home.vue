@@ -135,7 +135,7 @@
       <div>
         <v-carousel show-arrows-on-hover cycle>
           <v-carousel-item
-            v-for="item in products"
+            v-for="item in imagesCarousel"
             :key="item.id"
             :src="item.imageURL.join('')"
           ></v-carousel-item>
@@ -172,14 +172,7 @@ export default {
   components: {},
   data() {
     return {
-      product: [
-        {
-          imageURL:
-            "https://firebasestorage.googleapis.com/v0/b/petshop-firebase.appspot.com/o/products%2F6b.png?alt=media&token=b25eac84-d7bc-4496-9b0e-1bb8a7994b52",
-        },
-      ],
-
-      products: [],
+      imagesCarousel: [],
       DescriptionCard: [
         {
           id: 1,
@@ -219,7 +212,7 @@ export default {
   },
   firestore() {
     return {
-      products: db.collection("products"),
+      imagesCarousel: db.collection("images"),
     };
   },
 };
