@@ -26,11 +26,11 @@ const routes = [{
     requiresAuth: true
   }
 },
-// {
-//   path: '/Login',
-//   name: 'Login',
-//   component: () => import('../views/admin/Login.vue')
-// },
+{
+  path: '/products',
+  name: 'Products',
+  component: () => import('../views/Products.vue')
+},
 {
   path: '*',
   name: '404',

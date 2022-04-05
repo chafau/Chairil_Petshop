@@ -3,8 +3,8 @@
     <div class="min-vh-100">
       <v-container>
         <div class="my-3">
-          <h2 class="text-white">PETshop.COM</h2>
-          <p class="text-white">
+          <h2 class="white--text">PETshop.COM</h2>
+          <p class="white--text">
             Lorem ipsum dolor sit amet, vix natum labitur eleifend, mel ad amet
             laoreet menandri. Mauris id enim id purus ornare tincidunt. Aenean
             vel consequat risus. Proin viverra nisi at nisl imperdiet.Lorem
@@ -12,14 +12,14 @@
           </p>
         </div>
         <div class="my-5]=">
-          <h2 class="text-white">Privacy Policy</h2>
-          <p class="text-white">
+          <h2 class="white--text">Privacy Policy</h2>
+          <p class="white--text">
             Amet minim mol claslit non deserunt ullamco est sit aliqua dolor do
             amet sint. Velit officia consequat duis enim velit mollit.
           </p>
         </div>
         <div>
-          <h1 class="text-white my-3">FAQ</h1>
+          <h1 class="white--text my-3">FAQ</h1>
 
           <v-expansion-panels focusable>
             <v-expansion-panel class="transparent white--text my-3">
@@ -80,14 +80,20 @@
         </div>
       </v-container>
     </div>
+    <label @click="$refs.numberInput.focus()">
+      <input ref="numberInput" type="number" v-model="cost" />
+      <div class="formatted">{{ formattedCost }}</div>
+    </label>
   </div>
 </template>
 
 <script>
 export default {
   name: "Home",
+  components: {},
   data() {
     return {
+      cost: "",
       DescriptionCard: [
         {
           id: 1,
@@ -113,10 +119,28 @@ export default {
       ],
     };
   },
+  computed: {
+    formatter() {
+      return new Intl.NumberFormat("en-ID", {
+        style: "currency",
+        currency: "IDR",
+      });
+    },
+    formattedCost() {
+      return this.formatter
+        .format(this.cost)
+        .replace(/[IDR]/gi, "")
+        .replace(/(\.+\d{2})/, "")
+        .replace(/,/g, ".")
+        .trimLeft();
+    },
+  },
+  mounted() {},
 };
 </script>
 
 <style lang="scss">
-.v-expansion-panel {
+.mdi-chevron-down::before {
+  color: $white;
 }
 </style>

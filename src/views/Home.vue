@@ -1,6 +1,6 @@
 <template>
   <div id="home">
-    <div class="m-jumbotron d-flex min-vh-100">
+    <div class="m-jumbotron d-flex">
       <v-row class="m-0" align="center" justify="center">
         <v-col cols="7">
           <v-img
@@ -14,10 +14,10 @@
           class="justify-content-center align-items-center text-left px-9"
         >
           <div>
-            <h1 class="jumbo-title text-left text-white font-weight-bold">
+            <h1 class="jumbo-title text-left white--text font-weight-bold">
               Petshop Terbaik Untuk Hewan Kesayangan
             </h1>
-            <p class="subtitle text-white text-left w-75 m-0">
+            <p class="subtitle white--text text-left mt-4">
               Kami telah dipercaya oleh ribuan pelanggan dari seluruh Indonesia
             </p>
           </div>
@@ -46,10 +46,10 @@
 
     <v-container>
       <!--  -->
-      <v-col sm="12" md="6" class="m-auto align-items-center text-center">
+      <v-col sm="12" md="6" class="m-auto align-items-center text-center mx-auto">
         <v-col class="align-items-center text-center white--text">
           <h2 class="text-center mt-10">How PETshop Works</h2>
-          <p class="my-4">
+          <p class="my-4 px-14">
             Di Pusat Kebutuhan Hewan Peliharaan Terbesar, Terlengkap, dan
             Terpercaya No.1 di Indonesia
           </p>
@@ -59,10 +59,10 @@
 
       <!-- V-ROW -->
       <v-row>
-        <v-col cols="4" align-self="center">
+        <v-col cols="4">
           <div class="card-box white--text">
-            <div class="box-num d-flex ml-auto">
-              <p class="box-text d-block m-auto">1</p>
+            <div class="box-num d-flex align-center justify-center ml-auto">
+              <p class="box-text mb-0">1</p>
             </div>
             <h4 class="text-right my-2">Pilih Trainer Kamu</h4>
             <p class="desc-text text-right mb-0">
@@ -74,8 +74,8 @@
           <div style="height: 120px"></div>
 
           <div class="card-box white--text">
-            <div class="box-num d-flex ml-auto">
-              <p class="box-text d-block m-auto">2</p>
+            <div class="box-num d-flex align-center justify-center ml-auto">
+              <p class="box-text mb-0">3</p>
             </div>
             <h4 class="text-right my-2">Pilih Trainer Kamu</h4>
             <p class="desc-text text-right mb-0">
@@ -98,8 +98,8 @@
 
         <v-col cols="4" align-self="center">
           <div class="card-box white--text">
-            <div class="box-num d-flex mr-auto">
-              <p class="box-text d-block m-auto">2</p>
+            <div class="box-num d-flex align-center justify-center mr-auto">
+              <p class="box-text d-block mb-0">2</p>
             </div>
             <h4 class="text-left my-2">Pilih Trainer Kamu</h4>
             <p class="desc-text text-left mb-0">
@@ -111,8 +111,8 @@
           <div style="height: 120px"></div>
 
           <div class="card-box white--text">
-            <div class="box-num d-flex mr-auto">
-              <p class="box-text d-block m-auto">2</p>
+            <div class="box-num d-flex align-center justify-center mr-auto">
+              <p class="box-text d-block mb-0">4</p>
             </div>
             <h4 class="text-left my-2">Pilih Trainer Kamu</h4>
             <p class="desc-text text-left mb-0">
@@ -220,6 +220,7 @@ export default {
 
 <style lang="scss">
 #home {
+  // background: linear-gradient(180deg, #693FBD 4.21%, #B866D3 45.9%, #693FBD 93.06%);
   min-height: 100vh;
 
   .jumbo-title {
@@ -231,10 +232,12 @@ export default {
   .subtitle {
     font-family: $primary-font;
     font-size: 18px;
+    padding-right: 25% !important;
   }
 
   .m-jumbotron {
-    min-height: 100vh !important;
+    height: 100vh !important;
+    width: 99vw;
 
     @include tablet {
       min-width: 100%;

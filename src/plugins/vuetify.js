@@ -10,7 +10,8 @@ export default new Vuetify({
                 primary: '#693FBD',
                 secondary: '#B866D3',
                 anchor: '#8c9eff',
-                danger: '#FF0000'
+                danger: '#FF0000',
+                grayed: '#BDBDBD' 
             },
         },
     },

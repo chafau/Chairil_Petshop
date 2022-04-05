@@ -1,8 +1,8 @@
 <template>
-  <v-footer padless class="mt-5">
+  <v-footer padless class="">
     <v-card flat tile class="footer primary text-center">
       <v-card-text class="white--text">
-        <h5>PETshops</h5>
+        <h2 class="py-3">PETshops</h2>
         <p class="mb-0">Street Address No.00 City Province</p>
         Copyright - ©{{ new Date().getFullYear() }}
       </v-card-text>
@@ -24,5 +24,6 @@ export default {
 <style lang="scss" scoped>
 .footer {
     // background: $primary !important;
+    width: 100%;
 }
 </style>

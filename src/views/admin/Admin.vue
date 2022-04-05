@@ -1,8 +1,9 @@
 <template>
   <div id="home">
-    <v-container class="min-vh-100 mt-10">
-      <TableProduct></TableProduct>
-      <v-btn color="warning" class="mt-5 white--text" block elevation="2" large @click="signOut">Logout</v-btn>
+    <v-container class="min-vh-100 mt-10" fluid>
+      <ImageProduct></ImageProduct>
+      <ProductTable class="mt-10"></ProductTable>
+      <v-btn color="warning" class="mt-5 white--text" elevation="2" large @click="signOut">Logout</v-btn>
     </v-container>
     <!-- <h1>
       <h1>{{ LoggedIn }}</h1>

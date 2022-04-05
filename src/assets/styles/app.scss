@@ -3,9 +3,9 @@
 @import "utilities/function";
 
 
-body {
+div#app{
     // min-height: 200vh;
-    background: linear-gradient(180deg, #693FBD 4.21%, #B866D3 45.9%, #693FBD 93.06%);
+    background: linear-gradient(180deg, #693FBD 4.21%, #B866D3 45.9%, #693FBD 93.06%) !important;
     // overflow: overlay
 }
 ::-webkit-scrollbar {
@@ -15,6 +15,8 @@ body {
 //   user-select: none
 // }
 
+// "bootstrap": "^4.5.3",
+// "bootstrap-vue": "^2.21.2",
 
-@import "../../../node_modules/bootstrap/scss/bootstrap.scss";
-@import "../../../node_modules/bootstrap-vue/src/index.scss";
+// @import "../../../node_modules/bootstrap/scss/bootstrap.scss";
+// @import "../../../node_modules/bootstrap-vue/src/index.scss";

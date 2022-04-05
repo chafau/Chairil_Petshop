@@ -2,7 +2,7 @@
   <div>
     <v-data-table
       :headers="headers"
-      :items="products"
+      :items="images"
       :items-per-page="5"
       item-key="id"
       class="elevation-1"
@@ -12,9 +12,9 @@
     >
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title>Product Table</v-toolbar-title>
+          <v-toolbar-title>Image Carousel</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-dialog v-model="dialog">
+          <v-dialog v-model="dialog" max-width="500px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 color="primary"
@@ -27,66 +27,23 @@
                 New Item
               </v-btn>
             </template>
-
             <v-card id="">
-              <v-card-title>{{ modalTitle }}</v-card-title>
               <v-card-text>
                 <v-container>
                   <v-row>
                     <v-col cols="12" sm="6" md="6">
                       <v-text-field
-                        v-model="productData.productName"
-                        label="Nama Produk"
+                        v-model="imageData.imageName"
+                        label="Nama Gambar"
                       ></v-text-field>
-                      <vue-editor
-                        v-model="productData.productDescription"
-                      ></vue-editor>
                     </v-col>
                     <v-col cols="12" sm="6" md="6">
-                      <v-select
-                        v-model="productData.selectCondition"
-                        :items="itemsCondition"
-                        label="Kondisi Barang"
-                        persistent-hint
-                        return-object
-                      ></v-select>
-                      <v-row>
-                        <v-col>
-                          <v-text-field
-                            v-model="productData.productWeight"
-                            label="Berat"
-                          ></v-text-field>
-                        </v-col>
-                        <v-col>
-                          <v-select
-                            v-model="productData.selectUnit"
-                            :items="itemsUnit"
-                            label="Satuan"
-                            return-object
-                          ></v-select>
-                        </v-col>
-                      </v-row>
-
-                      <v-select
-                        v-model="productData.selectCategory"
-                        :items="itemsCategory"
-                        label="Kategori"
-                        return-object
-                      ></v-select>
-
-                      <v-text-field
-                        v-model="productData.productPrice"
-                        label="Harga"
-                        placeholder="Rp."
-                      ></v-text-field>
-                      {{ Number(productData.productPrice).toLocaleString() }}
-
                       <v-file-input
                         counter
                         show-size
                         truncate-length="30"
                         accept="image/png, image/jpeg, image/bmp"
-                        placeholder="Gambar Produk"
+                        placeholder="Pick an avatar"
                         prepend-icon="mdi-camera"
                         v-model="filesimg"
                         @change="uploadImage"
@@ -106,25 +63,14 @@
                   text
                   :loading="isLoading"
                   :disabled="isDisabled"
-                  v-if="modal == 'Add'"
-                  @click="addProduct()"
+                  @click="addImage()"
                 >
                   Add
-                </v-btn>
-                <v-btn
-                  color="green"
-                  text
-                  :loading="isLoading"
-                  v-if="modal == 'Update'"
-                  @click="updateProduct()"
-                >
-                  Update
                 </v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
-
-          <!-- <v-dialog v-model="dialogDelete" max-width="500px">
+          <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
               <v-card-title class="text-h5"
                 >Are you sure you want to delete this item?</v-card-title
@@ -140,34 +86,29 @@
                 <v-spacer></v-spacer>
               </v-card-actions>
             </v-card>
-          </v-dialog> -->
+          </v-dialog>
         </v-toolbar>
       </template>
       <template v-slot:item="{ item }">
         <tr>
-          <td>{{ item.productName }}</td>
-          <td>{{ item.selectCondition }}</td>
-          <td>{{ item.productWeight }} {{ item.selectUnit }}</td>
-          <td>{{ item.selectCategory }}</td>
-          <td>Rp. {{ Number(item.productPrice).toLocaleString() }}</td>
+          <td>{{ item.imageName }}</td>
           <td>
-            <v-icon class="mx-2" small @click="deleteItem(item)">
-              mdi-delete
-            </v-icon>
-            <v-icon class="mx-2" small @click="editProduct(item)">
-              mdi-pencil
-            </v-icon>
+            <v-img
+              class="mx-auto"
+              width="200"
+              :src="item.imageURL.join('')"
+            ></v-img>
+          </td>
+          <td>
+            <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
           </td>
         </tr>
       </template></v-data-table
     >
-
-    <!-- {{ this.formattedCost }} -->
   </div>
 </template>
 
 <script>
-import { VueEditor } from "vue2-editor";
 import { fb, db } from "../../firebase";
 import {
   getStorage,
@@ -191,70 +132,37 @@ const Toast = Swal.mixin({
 });
 
 export default {
-  name: "ProductTable",
-  components: {
-    VueEditor,
-  },
+  name: "ImageProduct",
   data() {
     return {
       isDisabled: true,
       isLoading: false,
       filesimg: [],
-      products: [],
+      images: [],
       modal: null,
-      modalTitle: null,
-      productData: {
-        productName: null,
-        productDescription: null,
-        productWeight: null,
-        selectCondition: null,
-        selectUnit: null,
-        productPrice: null,
-        selectCategory: null,
-        imageProductURL: [],
+      imageData: {
+        imageName: null,
+        imageURL: [],
       },
       dialog: false,
       dialogDelete: false,
-      itemsCondition: ["Baru", "Bekas"],
-      itemsUnit: ["gr", "Kg"],
-      itemsCategory: ["Makanan Hewan", "Accessories Hewan", "Perawatan Hewan"],
       headers: [
         {
-          text: "Nama Produk",
+          text: "Nama Gambar",
           align: "start",
           sortable: false,
         },
-        { text: "Kondisi Barang", sortable: false },
-        { text: "Berat", sortable: false },
-        { text: "Kategori", sortable: false },
-        { text: "Harga", sortable: false },
-        { text: "Aksi", sortable: false },
+        { text: "Gambar", sortable: false },
+        { text: "Action", sortable: false },
       ],
     };
   },
   firestore() {
     return {
-      products: db.collection("products"),
+      images: db.collection("images"),
     };
   },
-  computed: {
-    // formatter() {
-    //   return new Intl.NumberFormat("en-ID", {
-    //     style: "currency",
-    //     currency: "IDR",
-    //   });
-    // },
-    // formattedCost() {
-    //   return this.formatter
-    //     .format(this.productData.productPrice)
-    //     .replace(/[IDR]/gi, "")
-    //     .replace(/(\.+\d{2})/, "")
-    //     .replace(/,/g, ".")
-    //     .trimLeft();
-    // },
-  },
-
-  mounted() {},
+  computed: {},
 
   watch: {
     dialog(val) {
@@ -278,7 +186,7 @@ export default {
         confirmButtonText: "Yes, delete it!",
       }).then((result) => {
         if (result.value) {
-          this.$firestore.products.doc(item.id).delete();
+          this.$firestore.images.doc(item.id).delete();
 
           Toast.fire({
             type: "error",
@@ -288,24 +196,6 @@ export default {
         }
       });
       // console.log(item.id);
-    },
-
-    editProduct(item) {
-      this.dialog = true;
-      this.productData = item;
-      this.modal = "Update";
-      this.modalTitle = "Edit Product";
-    },
-
-    updateProduct() {
-      this.$firestore.products
-        .doc(this.productData.id)
-        .update(this.productData);
-      Toast.fire({
-        type: "success",
-        title: "Updated  successfully",
-      });
-      this.dialog = false;
     },
 
     deleteItemConfirm() {
@@ -330,24 +220,26 @@ export default {
     },
 
     resetData() {
-      this.productData = {
-        productName: null,
-        imageProductURL: [],
+      this.imageData = {
+        imageName: null,
+        imageURL: [],
       };
       this.filesimg = null;
-      this.modal = "Add";
-      this.modalTitle = "Add Product";
     },
 
-    addProduct() {
-      this.$firestore.products.add(this.productData);
-      Toast.fire({
-        type: "success",
-        icon: "success",
-        title: "Product created successfully",
-      });
-      this.close();
-      console.log(this.productData.imageProductURL);
+    addImage() {
+      if (!this.imageData.imageName || !this.imageData.imageURL.join("")) {
+        // console.log("ini kosong");
+      } else {
+        this.$firestore.images.add(this.imageData);
+        Toast.fire({
+          type: "success",
+          icon: "success",
+          title: "Product created successfully",
+        });
+        this.close();
+        console.log(this.imageData.imageURL);
+      }
     },
     cek() {
       if (this.filesimg.length == 0) {
@@ -358,7 +250,7 @@ export default {
       this.isLoading = true;
       if (this.filesimg) {
         const storage = getStorage();
-        const storageRef = ref(storage, "products/" + this.filesimg.name);
+        const storageRef = ref(storage, "images/" + this.filesimg.name);
         const uploadTask = uploadBytesResumable(storageRef, this.filesimg);
         uploadTask.on(
           "state_changed",
@@ -366,7 +258,7 @@ export default {
           (error) => {},
           () => {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-              this.productData.imageProductURL.push(downloadURL);
+              this.imageData.imageURL.push(downloadURL);
 
               console.log("File available at", downloadURL);
               this.isDisabled = false;
@@ -391,7 +283,7 @@ export default {
     //       (error) => {},
     //       () => {
     //         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-    //           this.productData.imageProductURL.push(downloadURL);
+    //           this.imageData.imageURL.push(downloadURL);
 
     //           console.log("File available at", downloadURL);
     //           // if (!downloadURL == 0) {

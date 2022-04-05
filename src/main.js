@@ -1,7 +1,6 @@
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./routes";
-// import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import globalComponents from './plugins/globalComponent.js'
 import VueImg from 'v-img';
 import jQuery from 'jquery';
@@ -9,8 +8,6 @@ import {fb}   from './firebase'
 import VueFirestore from 'vue-firestore'
 require('firebase/firestore')
 
-// import 'bootstrap/dist/css/bootstrap.css'
-// import 'bootstrap-vue/dist/bootstrap-vue.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all.js'
 
@@ -21,14 +18,11 @@ Vue.use(VueFirestore, {
 Vue.use(VueFirestore)
 Vue.use(globalComponents)
 Vue.use(fb)
-// Vue.use(BootstrapVue)
-// Vue.use(IconsPlugin)
 Vue.use(VueImg);
 
 window.$ = window.jQuery = jQuery;
 
 import 'popper.js';
-// import 'bootstrap';
 
 
 import Swal from 'sweetalert2';

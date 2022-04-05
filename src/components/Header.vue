@@ -43,6 +43,16 @@
         >
           Admin
         </v-tab>
+        
+        <v-tab
+          to="/products"
+          :ripple="false"
+          class="white--text"
+          min-width="96"
+          text
+        >
+          Products
+        </v-tab>
       </v-tabs>
     </div>
 
