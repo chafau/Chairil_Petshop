@@ -46,9 +46,13 @@
 
     <v-container>
       <!--  -->
-      <v-col sm="12" md="6" class="m-auto align-items-center text-center mx-auto">
+      <v-col
+        sm="12"
+        md="6"
+        class="m-auto align-items-center text-center mx-auto"
+      >
         <v-col class="align-items-center text-center white--text">
-          <h2 class="text-center mt-10">How PETshop Works</h2>
+          <h2 class="text-center mt-10">Bagaimana Cara PETshop Bekerja?</h2>
           <p class="my-4 px-14">
             Di Pusat Kebutuhan Hewan Peliharaan Terbesar, Terlengkap, dan
             Terpercaya No.1 di Indonesia
@@ -64,10 +68,10 @@
             <div class="box-num d-flex align-center justify-center ml-auto">
               <p class="box-text mb-0">1</p>
             </div>
-            <h4 class="text-right my-2">Pilih Trainer Kamu</h4>
+            <h3 class="text-right my-2">Buka Halaman Produk</h3>
             <p class="desc-text text-right mb-0">
-              Pilih trainer dari daftar yang sudah kami sesuaikan dengan jadwal
-              dan tipe latihanmu
+              Buka halaman produk yang berisi berbagai kebutuhan untuk hewan
+              kesayangan anda
             </p>
           </div>
 
@@ -77,10 +81,10 @@
             <div class="box-num d-flex align-center justify-center ml-auto">
               <p class="box-text mb-0">3</p>
             </div>
-            <h4 class="text-right my-2">Pilih Trainer Kamu</h4>
+            <h3 class="text-right my-2">Lakukan Pembelian</h3>
             <p class="desc-text text-right mb-0">
-              Pilih trainer dari daftar yang sudah kami sesuaikan dengan jadwal
-              dan tipe latihanmu
+              Klik pada produk tersebut dan anda akan diarahkan ke halaman
+              detail produk tersebut
             </p>
           </div>
         </v-col>
@@ -96,15 +100,14 @@
 
         <!-- batas v-col kedua -->
 
-        <v-col cols="4" align-self="center">
+        <v-col cols="4">
           <div class="card-box white--text">
             <div class="box-num d-flex align-center justify-center mr-auto">
               <p class="box-text d-block mb-0">2</p>
             </div>
-            <h4 class="text-left my-2">Pilih Trainer Kamu</h4>
+            <h3 class="text-left my-2">Pilih Produk</h3>
             <p class="desc-text text-left mb-0">
-              Pilih trainer dari daftar yang sudah kami sesuaikan dengan jadwal
-              dan tipe latihanmu
+              Pilih produk dari toko kami sesuai dengan apa yang ingin anda beli
             </p>
           </div>
 
@@ -114,10 +117,9 @@
             <div class="box-num d-flex align-center justify-center mr-auto">
               <p class="box-text d-block mb-0">4</p>
             </div>
-            <h4 class="text-left my-2">Pilih Trainer Kamu</h4>
+            <h3 class="text-left my-2">Checkout Pembelian</h3>
             <p class="desc-text text-left mb-0">
-              Pilih trainer dari daftar yang sudah kami sesuaikan dengan jadwal
-              dan tipe latihanmu
+              Bayar dengan debit atau platform online kesukaanmu
             </p>
           </div>
         </v-col>
@@ -186,7 +188,7 @@ export default {
           title: "nyaman",
           description:
             "Kami menjual berbagai makanan dan juga berbagai snack yang pastinya dengan rasa terbaik",
-          image: "fas fa-thumbs-up fa-3x",
+          image: "fas fa-shield fa-3x",
         },
         {
           id: 3,

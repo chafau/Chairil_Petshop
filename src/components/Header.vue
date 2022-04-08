@@ -104,7 +104,7 @@
             @click="dialog = false"
             form="check-login-form"
           >
-            Submit
+            Login
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -206,6 +206,7 @@ export default {
   }
 
   .v-tab {
+    font-family: $primary-font;
     text-decoration: none;
     text-transform: none;
     &::before {
